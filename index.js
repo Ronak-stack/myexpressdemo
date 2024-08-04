@@ -5,6 +5,7 @@ const app = express();
 const UserController = require('./controllers/userController');
 const LoginController = require('./controllers/loginController');
 const ProductRoutes = require('./routers/productRoutes/products');
+
 app.use(express.json());
 app.use(cors());
 app.post('/user/add', (req, res) => new UserController(req, res).saveUser());

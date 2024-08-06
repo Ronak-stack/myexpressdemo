@@ -63,6 +63,25 @@ const ProductList = () => {
         });
     }
 
+    const deleteProduct = (pid) => {
+        const token = localStorage.getItem('auth');
+        if(window.confirm('Do you want to delete this product?')) {
+            axios.post('http://localhost:5000/product/delete', {
+                "id": pid
+            }, {
+                headers: `Bearer ${token}`
+            }).then((e) => {
+                if(e.data.success) {
+                    toast.error(e.data.message);
+                    setProductList(productList.filter(product => product._id !== pid));
+                } else {
+                    toast.error(e.data.message);
+                }
+            }).catch((error) => {
+                toast.error(error.message)
+            });
+        }
+    }
     return (
         <>
             <Header />
@@ -94,7 +113,7 @@ const ProductList = () => {
                                         <td>{new Date(element.created_at).toDateString()}</td>
                                         <td>
                                             <button type="button" onClick={() => openEditProductModal(element)} className="btn btn-sm btn-success"><i className="fa fa-edit"></i></button>
-                                            <button type="button" className="ms-1 btn btn-sm btn-danger"><i className="fa fa-trash"></i></button>
+                                            <button type="button" className="ms-1 btn btn-sm btn-danger"><i className="fa fa-trash" onClick={() => deleteProduct(element._id)}></i></button>
                                         </td>
                                     </tr>
                                 ))}

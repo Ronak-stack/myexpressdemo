@@ -22,7 +22,8 @@ const Signin = () => {
             password: password
         }).then((e) => {
             if (e.data.success) {
-                localStorage.setItem('user', JSON.stringify(e.data.data));
+                localStorage.setItem('user', JSON.stringify(e.data.data.result));
+                localStorage.setItem('auth', JSON.stringify(e.data.data.token));
                 navigation('/');
             } else {
                 setLoggedInFlag(true);

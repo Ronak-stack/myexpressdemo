@@ -37,13 +37,14 @@ const EditProductModal = (props) => {
 
     const updateProduct = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('auth');
         axios.post('http://localhost:5000/product/update', {
-            '_id': props.product._id,
+            'pid': props.product._id,
             'name': productName,
             'category': categoryName,
             'company': companyName,
             'user_id': JSON.parse(localStorage.getItem('user'))._id
-        }).then((e) => {
+        },{headers:`Bearer ${token}`}).then((e) => {
             props.notify(e.data.success,e.data.message);
             props.updateShowWditModelStatus();
             closeModal();

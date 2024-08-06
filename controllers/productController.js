@@ -1,5 +1,4 @@
 const { productModel } = require('../db/modelServiceProvider');
-
 module.exports = class ProductController {
     #request;
     #response;
@@ -12,8 +11,9 @@ module.exports = class ProductController {
         try {
             let product = new productModel(this.#request.body);
             let result = null;
-            if(product.id) {
-                result = await productModel.updateOne({_id:product.id},{$set: {
+            
+            if(this.#request.body.id) {
+                result = await productModel.updateOne({_id:this.#request.body.pid},{$set: {
                     name:product.name,
                     category: product.category,
                     company:product.company
@@ -56,7 +56,18 @@ module.exports = class ProductController {
         } catch (error) {
             return this.#response.send(JSON.stringify({success:false, message:error.message, data:""}));
         }
+    }
 
-        return this.#response.send(JSON.stringify({success:false, message:error.message, data:""}));
+    async deleteProduct() {
+        try {
+            let product = await productModel.deleteOne({_id:this.#request.pid})
+            if(product) {
+                return this.#response.send(JSON.stringify({success: true, message: 'Product Delete', data:product}));
+            } else {
+                return this.#response.send(JSON.stringify({success: false, message: 'Product Not Deleted Yet', data:""}));
+            }
+        } catch (error) {
+            return this.#response.send(JSON.stringify({success: true, message: error.message, data:""}));
+        }
     }
  }

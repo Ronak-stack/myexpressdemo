@@ -12,11 +12,14 @@ const AddProduct = () => {
 
     const saveProduct = async (e) => {
         e.preventDefault();
+        const token = JSON.parse(localStorage.getItem('auth'));
         axios.post('http://localhost:5000/product/add', {
             'name': productName,
             'category':categoryName,
             'company':companyName,
-            'user_id': JSON.parse(localStorage.getItem('user'))._id
+            'user_id': JSON.parse(localStorage.getItem('user'))._id,
+        }, {
+            headers: `Bearer ${token}`
         }).then((e) => {
             alert(e.data.message);
             navigation('/product/list');

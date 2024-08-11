@@ -1,10 +1,10 @@
 const express = require('express');
 const ProductRoutes = express.Router();
 const ProductController = require('../../controllers/productController');
-
+const verifyAuthToken = require('../../middleware/auth');
 ProductRoutes.get('/',(req,res) => new ProductController(req,res).showProducts());
-ProductRoutes.post('/add',(req,res) => new ProductController(req,res).saveProduct());
-ProductRoutes.post('/update',(req,res) => new ProductController(req,res).saveProduct());
+ProductRoutes.post('/add', verifyAuthToken, (req,res) => new ProductController(req,res).saveProduct());
+ProductRoutes.post('/update', verifyAuthToken, (req,res) => new ProductController(req,res).saveProduct());
 ProductRoutes.post('/search',(req,res) => new ProductController(req,res).searchProduct());
-ProductRoutes.post('/delete',(req,res) => new ProductController(req,res).deleteProduct());
+ProductRoutes.post('/delete', verifyAuthToken, (req,res) => new ProductController(req,res).deleteProduct());
 module.exports = ProductRoutes;

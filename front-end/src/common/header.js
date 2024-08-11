@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
-    const auth = localStorage.getItem('user');
+    const auth = localStorage.getItem('auth');
     const navigate = useNavigate();
     const logout = () => {
         if(auth) {
@@ -22,15 +22,12 @@ const Header = () => {
                         <li className="nav-item">
                             <Link className="nav-link active" to="/product/list">Products</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/product/add">Add Product</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/product/update">Update Product</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/profile">Profile</Link>
-                        </li>
+                        {
+                            auth ?
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/product/add">Add Product</Link>
+                                </li> : ''
+                        }
                         <li className="nav-item">
                             {
                                 auth ?

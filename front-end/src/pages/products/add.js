@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../common/header";
 import Footer from "../../common/footer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 const AddProduct = () => {
 
+    useEffect(() => {
+        const auth = localStorage.getItem('auth');
+        if (auth) {
+            navigation('/');
+        }
+    },[]);
     const [productName, setProductName] = useState('');
     const [categoryName, setCategoryName] = useState('');
     const [companyName, setCompanyName] = useState('');
@@ -19,12 +26,14 @@ const AddProduct = () => {
             'company':companyName,
             'user_id': JSON.parse(localStorage.getItem('user'))._id,
         }, {
-            headers: `Bearer ${token}`
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }
         }).then((e) => {
             alert(e.data.message);
             navigation('/product/list');
         }).catch((error) => {
-            console.log(error);
+            toast.error(error.message);
         })
     }
 
@@ -56,6 +65,7 @@ const AddProduct = () => {
                 </div>
             </form>
         </div>
+        <ToastContainer />
         <Footer/>
     </>
    )

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const Signin = () => {
@@ -10,7 +11,7 @@ const Signin = () => {
     const [notLoggedIn, setLoggedInFlag] = useState(false);
     const [msg, setMsg] = useState("");
     useEffect(() => {
-        const auth = localStorage.getItem('user');
+        const auth = localStorage.getItem('auth');
         if (auth) {
             navigation('/');
         }
@@ -30,7 +31,7 @@ const Signin = () => {
                 setMsg(e.data.message);
             }
 
-        }).catch((e) => console.log(e));
+        }).catch((e) => toast.success(e.message));
     }
 
     return (
@@ -117,6 +118,7 @@ const Signin = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </section>
     );
 }
